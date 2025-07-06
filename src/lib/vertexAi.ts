@@ -38,7 +38,7 @@ export async function getWallDimensions(
 
   // Try to parse the JSON from the model's response
   try {
-    const match = responseText.match(/\{.*\}/s);
+    const match = responseText.match(/\{.*\}/);
     if (match) {
       const dims = JSON.parse(match[0]);
       if (typeof dims.width === "number" && typeof dims.height === "number") {
@@ -47,6 +47,7 @@ export async function getWallDimensions(
     }
     throw new Error("Could not parse dimensions from model response");
   } catch (e) {
+    console.error(e);
     throw new Error(
       "Vertex AI did not return valid dimensions: " + responseText
     );
