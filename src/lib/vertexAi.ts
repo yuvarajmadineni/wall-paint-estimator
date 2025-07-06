@@ -3,7 +3,6 @@
 
 import { VertexAI } from "@google-cloud/vertexai";
 import { existsSync, writeFileSync } from "fs";
-import { join } from "path";
 
 
 const project = process.env.GOOGLE_PROJECT_ID!;
