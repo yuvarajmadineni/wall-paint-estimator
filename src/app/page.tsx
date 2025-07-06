@@ -160,10 +160,10 @@ export default function HomePage() {
       {error && <p className="text-red-600 mt-4">{error}</p>}
       {result && (
         <div className="mt-8 p-4 border rounded bg-white shadow max-w-md w-full">
-          <h2 className="text-xl font-semibold mb-2">Estimation Result</h2>
-          <p>Width: {result.width} feet</p>
-          <p>Height: {result.height} feet</p>
-          <p className="font-bold mt-2">
+          <h2 className="text-xl font-semibold mb-2 text-black">Estimation Result</h2>
+          <p className="text-black">Width: {result.width} feet</p>
+          <p className="text-black">Height: {result.height} feet</p>
+          <p className="font-bold mt-2 text-black">
             Estimated Cost: ${result.cost.toFixed(2)}
           </p>
         </div>

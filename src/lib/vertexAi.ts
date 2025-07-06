@@ -2,12 +2,26 @@
 // For now, this is mocked. Replace with real API call when available.
 
 import { VertexAI } from "@google-cloud/vertexai";
+import { existsSync, writeFileSync } from "fs";
+import { join } from "path";
+
 
 const project = process.env.GOOGLE_PROJECT_ID!;
 const location = process.env.GOOGLE_LOCATION || "us-central1";
 const model = "gemini-2.0-flash"; // Use Gemini Vision model
 
-const vertexAI = new VertexAI({ project, location });
+// create a vertex-ai.json file in the root of the project if doesn't exist
+const vertexAiJsonPath = join(process.cwd(), "vertex-ai.json");
+if (!existsSync(vertexAiJsonPath)) {
+  // Write the original JSON string to preserve proper escaping
+  writeFileSync(vertexAiJsonPath, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON!);
+}
+
+const vertexAI = new VertexAI({
+  project,
+  location,
+});
+
 const generativeVisionModel = vertexAI.getGenerativeModel({ model });
 
 /**
