@@ -11,7 +11,7 @@ const location = process.env.GOOGLE_LOCATION || "us-central1";
 const model = "gemini-2.0-flash"; // Use Gemini Vision model
 
 // create a vertex-ai.json file in the root of the project if doesn't exist
-const vertexAiJsonPath = join(process.cwd(), "vertex-ai.json");
+const vertexAiJsonPath = "/tmp/vertex-ai.json";
 if (!existsSync(vertexAiJsonPath)) {
   // Write the original JSON string to preserve proper escaping
   writeFileSync(vertexAiJsonPath, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON!);
