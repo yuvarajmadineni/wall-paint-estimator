@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+vertex-ai.json
+
+# Google Cloud credentials
+vertex-ai.json
