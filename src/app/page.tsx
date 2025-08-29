@@ -9,6 +9,7 @@ export default function HomePage() {
     height: number;
     cost: number;
   } | null>(null);
+  const [objectDetection, setObjectDetection] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +62,7 @@ export default function HomePage() {
     setLoading(true);
     setError("");
     setResult(null);
+    setObjectDetection(null);
     const formData = new FormData();
     formData.append("image", image);
     try {
@@ -71,6 +73,32 @@ export default function HomePage() {
       if (!res.ok) throw new Error("Failed to analyze image");
       const data = await res.json();
       setResult(data);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Unknown error");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleObjectDetection = async () => {
+    if (!image) return;
+    setLoading(true);
+    setError("");
+    setObjectDetection(null);
+    const formData = new FormData();
+    formData.append("image", image);
+    try {
+      const res = await fetch("/api/object-localization", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Failed to detect objects");
+      setObjectDetection(data);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -149,13 +177,23 @@ export default function HomePage() {
             </>
           )}
         </div>
-        <button
-          type="submit"
-          disabled={loading || !image}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition-colors disabled:opacity-50"
-        >
-          {loading ? "Analyzing..." : "Upload & Estimate"}
-        </button>
+        <div className="flex gap-2 w-full">
+          <button
+            type="submit"
+            disabled={loading || !image}
+            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition-colors disabled:opacity-50"
+          >
+            {loading ? "Analyzing..." : "Upload & Estimate"}
+          </button>
+          <button
+            type="button"
+            onClick={handleObjectDetection}
+            disabled={loading || !image}
+            className="flex-1 px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition-colors disabled:opacity-50"
+          >
+            {loading ? "Detecting..." : "Object Detection"}
+          </button>
+        </div>
       </form>
       {error && <p className="text-red-600 mt-4">{error}</p>}
       {result && (
@@ -166,6 +204,14 @@ export default function HomePage() {
           <p className="font-bold mt-2 text-black">
             Estimated Cost: ${result.cost.toFixed(2)}
           </p>
+        </div>
+      )}
+      {objectDetection && (
+        <div className="mt-8 p-4 border rounded bg-white shadow max-w-md w-full">
+          <h2 className="text-xl font-semibold mb-2 text-black">Object Detection Predictions</h2>
+          <pre className="text-sm text-black overflow-auto whitespace-pre-wrap">
+            {JSON.stringify(objectDetection, null, 2)}
+          </pre>
         </div>
       )}
     </main>
