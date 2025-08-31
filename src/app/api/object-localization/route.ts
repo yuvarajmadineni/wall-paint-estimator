@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleAuth } from "google-auth-library";
+import { existsSync, writeFileSync } from "fs";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,12 @@ const auth = new GoogleAuth({ scopes: ["https://www.googleapis.com/auth/cloud-pl
 // Direct REST endpoint URL (regional)
 const apiHost = "https://us-central1-aiplatform.googleapis.com";
 const predictUrl = `${apiHost}/v1/projects/${projectId}/locations/${location}/endpoints/${endpointId}:predict`;
+
+const vertexAiJsonPath = "/tmp/vertex-ai.json";
+if (!existsSync(vertexAiJsonPath)) {
+  // Write the original JSON string to preserve proper escaping
+  writeFileSync(vertexAiJsonPath, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON!);
+}
 
 
 export async function POST(req: NextRequest) {
