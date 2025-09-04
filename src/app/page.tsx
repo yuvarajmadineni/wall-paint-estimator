@@ -9,7 +9,94 @@ export default function HomePage() {
     height: number;
     cost: number;
   } | null>(null);
-  const [objectDetection, setObjectDetection] = useState<Record<string, unknown> | null>(null);
+  const [objectDetection, setObjectDetection] = useState<{
+    objects?: Array<{
+      name: string;
+      confidence: string;
+      bounding_box?: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      };
+      description?: string;
+      type?: string;
+    }>;
+    architectural_elements?: {
+      walls?: Array<{
+        name: string;
+        confidence: string;
+        bounding_box?: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        };
+        orientation?: string;
+        surface_area?: string;
+      }>;
+      windows?: Array<{
+        name: string;
+        confidence: string;
+        bounding_box?: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        };
+        type?: string;
+      }>;
+      doors?: Array<{
+        name: string;
+        confidence: string;
+        bounding_box?: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        };
+        type?: string;
+      }>;
+      ceilings?: Array<{
+        name: string;
+        confidence: string;
+        bounding_box?: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        };
+        surface_area?: string;
+      }>;
+      floors?: Array<{
+        name: string;
+        confidence: string;
+        bounding_box?: {
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+        };
+        surface_area?: string;
+      }>;
+    };
+    scene?: string;
+    text_detected?: Array<{
+      text: string;
+      bounding_box?: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      };
+    }>;
+    summary?: string;
+    room_dimensions?: {
+      estimated_width?: string;
+      estimated_height?: string;
+      estimated_length?: string;
+    };
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +179,7 @@ export default function HomePage() {
     const formData = new FormData();
     formData.append("image", image);
     try {
-      const res = await fetch("/api/object-localization", {
+      const res = await fetch("/api/object-detection", {
         method: "POST",
         body: formData,
       });
@@ -141,11 +228,15 @@ export default function HomePage() {
           />
           {preview ? (
             <div className="flex flex-col items-center gap-2">
-              <img
-                src={preview}
-                alt="Preview"
-                className="max-h-48 rounded shadow mb-2 object-contain"
-              />
+              <div className="relative">
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="max-h-48 rounded shadow mb-2 object-contain"
+                />
+                
+
+              </div>
               <button
                 type="button"
                 onClick={handleRemoveImage}
@@ -191,7 +282,7 @@ export default function HomePage() {
             disabled={loading || !image}
             className="flex-1 px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition-colors disabled:opacity-50"
           >
-            {loading ? "Detecting..." : "Object Detection"}
+            {loading ? "Detecting..." : "Detect Objects"}
           </button>
         </div>
       </form>
@@ -207,11 +298,17 @@ export default function HomePage() {
         </div>
       )}
       {objectDetection && (
-        <div className="mt-8 p-4 border rounded bg-white shadow max-w-md w-full">
-          <h2 className="text-xl font-semibold mb-2 text-black">Object Detection Predictions</h2>
-          <pre className="text-sm text-black overflow-auto whitespace-pre-wrap">
-            {JSON.stringify(objectDetection, null, 2)}
-          </pre>
+        <div className="mt-8 p-4 border rounded bg-white shadow max-w-2xl w-full">
+          <h2 className="text-xl font-semibold mb-4 text-black">Object Detection Results</h2>
+          
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
+              View Raw JSON Response
+            </summary>
+            <pre className="text-xs text-gray-600 overflow-auto whitespace-pre-wrap mt-2 p-2 bg-gray-50 rounded">
+              {JSON.stringify(objectDetection, null, 2)}
+            </pre>
+          </details>
         </div>
       )}
     </main>

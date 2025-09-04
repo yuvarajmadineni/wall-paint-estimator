@@ -57,7 +57,12 @@ export async function getWallDimensions(
    - Account for the camera distance and perspective distortion
    - Provide dimensions that reflect the actual wall size, not the apparent size in the image
 
-Estimate the width and height of the wall in feet, considering the zoom level and scanning distance. Respond ONLY as JSON: {"width": <number>, "height": <number>}`,
+4. WALL SHAPE AND COMPLEXITY:
+   - Identify if the wall has irregular geometry (e.g., triangular segments, curved sections)
+   - Note built-in cabinetry or shelving that affects paintable surface area
+   - Consider decorative trim, dentil crown moulding, or accent wall treatments
+
+Estimate the width and height of the wall in feet, considering the zoom level, scanning distance, and any irregular geometry. Respond ONLY as JSON: {"width": <number>, "height": <number>}`,
   };
 
   const request = {
