@@ -77,6 +77,8 @@ Please identify EVERYTHING visible in the image:
    - Smoke detectors
    - Any other fixtures or hardware
 
+Additionally, for EVERY object and architectural element you identify, estimate the real-world width and height in feet based on perspective, known object sizes, and visual cues. Include these as fields in the JSON response.
+
 Respond with a comprehensive JSON object containing:
 {
   "objects": [
@@ -90,7 +92,9 @@ Respond with a comprehensive JSON object containing:
         "height": percentage_of_image_height
       },
       "description": "detailed description of the object",
-      "type": "wall/window/door/ceiling/floor/furniture/appliance/electronics/decorative/text/fixture/molding/trim/railing/cabinetry/accent_wall"
+      "type": "wall/window/door/ceiling/floor/furniture/appliance/electronics/decorative/text/fixture/molding/trim/railing/cabinetry/accent_wall",
+      "estimated_width_feet": "estimated width in feet",
+      "estimated_height_feet": "estimated height in feet"
     }
   ],
   "architectural_elements": {
@@ -104,10 +108,12 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "orientation": "vertical/horizontal/angled/curved",
+        ** "orientation": "vertical/horizontal/angled/curved",
         "shape": "rectangular/triangular/curved/irregular",
         "accent": true,
-        "surface_area": "estimated area in square feet"
+        "surface_area": "estimated area in square feet",
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "moldings": [
@@ -120,7 +126,9 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "style": "dentil/cove/ogee/etc"
+        "style": "dentil/cove/ogee/etc",
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "railings": [
@@ -133,7 +141,9 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "curved": true
+        "curved": true,
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "cabinetry": [
@@ -145,7 +155,9 @@ Respond with a comprehensive JSON object containing:
           "y": percentage_from_top_edge,
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
-        }
+        },
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "ceilings": [
@@ -158,7 +170,9 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "surface_area": "estimated area in square feet"
+        "surface_area": "estimated area in square feet",
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "ceilings_special": [
@@ -171,7 +185,9 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "type": "tray/coffered/other"
+        "type": "tray/coffered/other",
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ],
     "floors": [
@@ -184,7 +200,9 @@ Respond with a comprehensive JSON object containing:
           "width": percentage_of_image_width,
           "height": percentage_of_image_height
         },
-        "surface_area": "estimated area in square feet"
+        "surface_area": "estimated area in square feet",
+        "estimated_width_feet": "estimated width in feet",
+        "estimated_height_feet": "estimated height in feet"
       }
     ]
   },
